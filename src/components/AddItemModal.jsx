@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Supabase from "./Supabase";
 
 export default function AddItemModal({ onClose, reloadPage }) {
-  const [data, setData] = useState([]);
+  const [db, setDB] = useState();
+
   const hideModal = () => {
     onClose();
   };
@@ -18,34 +18,51 @@ export default function AddItemModal({ onClose, reloadPage }) {
 
     const inputTime =
       new Date(inputDate).getTime() + hours * 3600000 + minutes * 60000;
-    const currentTime =
-      currentDate.getTime() + 3600000;
+    const currentTime = currentDate.getTime() + 3600000;
     const isDayAfter2100 = new Date(inputDate).getTime() > 4132252800000;
 
     if (inputTime < currentTime || isDayAfter2100) {
       alert("Choose a valid date and time. Between now and year 2100");
     } else {
       try {
-        const { data: todoList } = await Supabase.database
-          .from("todo_table")
-          .insert([
-            {
-              date: `${document.getElementById("todoDate").value}`,
-              time: `${document.getElementById("todoTime").value}`,
-              description: `${
-                document.getElementById("todoDescription").value
-              }`,
-            },
-          ])
-          .select();
-        setData(todoList);
+      const db = await new Promise((resolve, reject) => {
+        const request = window.indexedDB.open("myDatabase", 2);
+
+        request.onerror = (event) => {
+          console.error("Failed to open database:", event.target.error);
+          reject(event.target.error);
+        };
+
+        request.onsuccess = (event) => {
+          resolve(event.target.result);
+        };
+      });
+
+        const transaction = db.transaction(["todo"], "readwrite");
+        const objectStore = transaction.objectStore("todo");
+        const date = document.getElementById("todoDate").value;
+        const time = document.getElementById("todoTime").value;
+        const description = document.getElementById("todoDescription").value;
+        const newItem = { date, time, description };
+
+        const addRequest = objectStore.add(newItem);
+
+        addRequest.onsuccess = () => {
+          console.log("New todo item added successfully");
+        };
+
+        addRequest.onerror = (event) => {
+          console.error("Error adding todo item:", event.target.error);
+        };
+
+        db.close();
+        alert("DONE! Added Item");
+        reloadApp();
+        hideModal();
       } catch (error) {
         alert("ERROR! Check your internet connection");
         console.log("Error:", error);
       }
-      alert("DONE! Added Item");
-      reloadApp();
-      hideModal();
     }
   };
   const getCurrentDate = () => {

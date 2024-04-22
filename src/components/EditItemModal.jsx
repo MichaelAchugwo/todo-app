@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Supabase from "./Supabase";
 
 export default function EditItemModal({
   description,

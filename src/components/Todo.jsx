@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import EditItemModal from "./EditItemModal";
 import DeleteItemModal from "./DeleteItemModal";
-import Supabase from "./Supabase";
 
 export default function Todo({ id, description, date, time, fetchData }) {
   const [showEditModal, setShowComponent2] = useState(false);
@@ -10,6 +9,8 @@ export default function Todo({ id, description, date, time, fetchData }) {
   const [editItemDate, setEditItemDate] = useState("");
   const [editItemTime, setEditItemTime] = useState("");
   const [daysLeft, setDaysLeft] = useState("");
+  const [minutesLeft, setMinutesLeft] = useState();
+  const [db, setDB] = useState();
 
   const showEditItemModal = (description, date, time) => {
     setShowComponent2(true);
@@ -21,41 +22,81 @@ export default function Todo({ id, description, date, time, fetchData }) {
     setShowComponent2(false);
     setShowComponent3(false);
   };
+
   const updateTodoItem = async () => {
     let todoDescription = document.getElementById("todo-name").value;
     let todoDate = document.getElementById("todo-date").value;
     let todoTime = document.getElementById("todo-time").value;
+
     try {
-      const { data: updatedTodoItem, error } = await Supabase.database
-        .from("todo_table")
-        .update({
-          date: `${todoDate}`,
-          description: `${todoDescription}`,
-          time: `${todoTime}`,
-        })
-        .eq("id", `${id}`)
-        .select();
-      if (error) {
-        throw error;
-      }
-      fetchData();
+      const db = await new Promise((resolve, reject) => {
+        const request = window.indexedDB.open("myDatabase", 2);
+
+        request.onerror = (event) => {
+          console.error("Failed to open database:", event.target.error);
+          reject(event.target.error);
+        };
+
+        request.onsuccess = (event) => {
+          resolve(event.target.result);
+        };
+      });
+
+      const transaction = db.transaction(["todo"], "readwrite");
+      const objectStore = transaction.objectStore("todo");
+      const editRequest = objectStore.put({
+        id,
+        date: todoDate,
+        time: todoTime,
+        description: todoDescription,
+      });
+
+      editRequest.onsuccess = () => {
+        console.log("Todo item edited successfully");
+        db.close();
+        fetchData(); // Assuming fetchData() is a function to update the UI after editing
+      };
+
+      editRequest.onerror = (event) => {
+        console.error("Error editing todo item:", event.target.error);
+        db.close();
+      };
     } catch (error) {
       alert("ERROR! Check your internet connection");
-      console.error("Error fetching data:", error.message);
+      console.error("Error updating todo item:", error.message);
     }
   };
+
   const showDeleteItemModal = () => {
     setShowComponent3(true);
   };
   const deleteTodoItem = async () => {
     try {
-      const { error } = await Supabase.database
-        .from("todo_table")
-        .delete()
-        .eq("id", `${id}`);
-      if (error) {
-        throw error;
-      }
+      const db = await new Promise((resolve, reject) => {
+        const request = window.indexedDB.open("myDatabase", 2);
+
+        request.onerror = (event) => {
+          console.error("Failed to open database:", event.target.error);
+          reject(event.target.error);
+        };
+
+        request.onsuccess = (event) => {
+          resolve(event.target.result);
+        };
+      });
+      const transaction = db.transaction(["todo"], "readwrite");
+      const objectStore = transaction.objectStore("todo");
+      const deleteRequest = objectStore.delete(id);
+
+      deleteRequest.onsuccess = () => {
+        console.log("Todo item deleted successfully");
+      };
+
+      deleteRequest.onerror = (event) => {
+        console.error("Error deleting todo item:", event.target.error);
+      };
+
+      db.close();
       fetchData();
     } catch (error) {
       alert("ERROR! Check your internet connection");
@@ -95,7 +136,7 @@ export default function Todo({ id, description, date, time, fetchData }) {
     let currentMinutes = new Date().getMinutes();
     let differenceInMinutes =
       todoHours * 60 + todoMinutes - (currentHours * 60 + currentMinutes);
-
+    setMinutesLeft(differenceInMinutes);
     if (differenceInMinutes < 60 && differenceInDays < 1) {
       setDaysLeft(`${differenceInMinutes}m left`);
     } else if (currentHours < 24 && differenceInDays < 1) {
@@ -117,7 +158,7 @@ export default function Todo({ id, description, date, time, fetchData }) {
     };
   }, [time]);
 
-  if (differenceInDays >= 0) {
+  if (minutesLeft > 0) {
     return (
       <>
         {showEditModal && (
