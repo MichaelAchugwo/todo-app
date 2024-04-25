@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import EditItemModal from "./EditItemModal";
 import DeleteItemModal from "./DeleteItemModal";
-import Supabase from "./Supabase"
+import Supabase from "./Supabase";
 
 export default function Todo({ user, id, description, date, time, fetchData }) {
   const [showEditModal, setShowComponent2] = useState(false);
@@ -41,6 +41,8 @@ export default function Todo({ user, id, description, date, time, fetchData }) {
       if (error) {
         throw error;
       }
+      alert("Updated!");
+      hideModal();
       fetchData();
     } catch (error) {
       alert("ERROR! Check your internet connection");
@@ -60,6 +62,8 @@ export default function Todo({ user, id, description, date, time, fetchData }) {
       if (error) {
         throw error;
       }
+      alert("Deleted!");
+      hideModal();
       fetchData();
     } catch (error) {
       alert("ERROR! Check your internet connection");

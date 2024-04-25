@@ -41,6 +41,7 @@ export default function AddItemModal({ user, onClose, reloadPage }) {
           ])
           .select();
         setData(todoList);
+        alert("Added!")
         hideModal();
         reloadPage();
       } catch (error) {
