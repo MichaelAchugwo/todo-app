@@ -49,6 +49,7 @@ function App() {
     }
   };
 
+
   const hideModal = () => {
     setShowComponent1(false);
   };

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Supabase from "./Supabase";
 
 export default function AddItemModal({ user, onClose, reloadPage }) {
   const [data, setData] = useState([]);
@@ -18,8 +17,7 @@ export default function AddItemModal({ user, onClose, reloadPage }) {
 
     const inputTime =
       new Date(inputDate).getTime() + hours * 3600000 + minutes * 60000;
-    const currentTime =
-      currentDate.getTime() + 3600000;
+    const currentTime = currentDate.getTime() + 3600000;
     const isDayAfter2100 = new Date(inputDate).getTime() > 4132252800000;
 
     if (inputTime < currentTime || isDayAfter2100) {
@@ -46,9 +44,6 @@ export default function AddItemModal({ user, onClose, reloadPage }) {
         alert("ERROR! Check your internet connection");
         console.log("Error:", error);
       }
-      alert("DONE! Added Item");
-      reloadApp();
-      hideModal();
     }
   };
   const getCurrentDate = () => {
