@@ -29,7 +29,6 @@ export default function Todo({ user, id, description, date, time, fetchData }) {
     let todoTime = document.getElementById("todo-time").value;
 
     try {
-<<<<<<< HEAD
       const { error } = await Supabase.database
         .from("todo_table")
         .update({
@@ -42,40 +41,6 @@ export default function Todo({ user, id, description, date, time, fetchData }) {
         throw error;
       }
       fetchData();
-=======
-      const db = await new Promise((resolve, reject) => {
-        const request = window.indexedDB.open("myDatabase", 2);
-
-        request.onerror = (event) => {
-          console.error("Failed to open database:", event.target.error);
-          reject(event.target.error);
-        };
-
-        request.onsuccess = (event) => {
-          resolve(event.target.result);
-        };
-      });
-
-      const transaction = db.transaction(["todo"], "readwrite");
-      const objectStore = transaction.objectStore("todo");
-      const editRequest = objectStore.put({
-        id,
-        date: todoDate,
-        time: todoTime,
-        description: todoDescription,
-      });
-
-      editRequest.onsuccess = () => {
-        console.log("Todo item edited successfully");
-        db.close();
-        fetchData(); // Assuming fetchData() is a function to update the UI after editing
-      };
-
-      editRequest.onerror = (event) => {
-        console.error("Error editing todo item:", event.target.error);
-        db.close();
-      };
->>>>>>> 3729b7bca6e0a35cfe168d677c03d2230d3cd50f
     } catch (error) {
       alert("ERROR! Check your internet connection");
       console.error("Error updating todo item:", error.message);
