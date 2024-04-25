@@ -9,7 +9,7 @@ export default function DeleteItemModal({ onClose, onDelete }) {
     hideModal();
   };
   return (
-    <div className="absolute top-0 left-0 min-w-full min-h-screen flex place-items-center justify-center bg-black bg-opacity-70">
+    <div className="z-50 absolute top-0 left-0 min-w-full min-h-screen flex place-items-center justify-center bg-black bg-opacity-70">
       <div className="w-5/6 md:w-1/3 bg-gray-200 p-9 text-center rounded-3xl">
         <h1 className="text-2xl font-semibold mb-5">Are you sure?</h1>
         <button

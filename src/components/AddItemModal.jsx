@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Supabase from "./Supabase";
 
 export default function AddItemModal({ user, onClose, reloadPage }) {
   const [data, setData] = useState([]);
@@ -32,7 +33,7 @@ export default function AddItemModal({ user, onClose, reloadPage }) {
               time: `${document.getElementById("todoTime").value}`,
               description: `${
                 document.getElementById("todoDescription").value
-                }`,
+              }`,
               email: user.email,
               username: user.user_metadata.name,
               user_id: user.id,
@@ -40,6 +41,8 @@ export default function AddItemModal({ user, onClose, reloadPage }) {
           ])
           .select();
         setData(todoList);
+        hideModal();
+        reloadPage();
       } catch (error) {
         alert("ERROR! Check your internet connection");
         console.log("Error:", error);
@@ -63,7 +66,7 @@ export default function AddItemModal({ user, onClose, reloadPage }) {
   };
 
   return (
-    <div className="modal absolute min-w-full min-h-screen flex place-items-center justify-center bg-black bg-opacity-70">
+    <div className="z-50 modal absolute min-w-full min-h-screen flex place-items-center justify-center bg-black bg-opacity-70">
       <div className="w-5/6 md:w-1/2 bg-gray-200 p-9 pt-6 rounded-3xl">
         <p className="text-3xl text-right">
           <i

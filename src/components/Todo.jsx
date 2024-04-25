@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import EditItemModal from "./EditItemModal";
 import DeleteItemModal from "./DeleteItemModal";
+import Supabase from "./Supabase"
 
 export default function Todo({ user, id, description, date, time, fetchData }) {
   const [showEditModal, setShowComponent2] = useState(false);
@@ -52,35 +53,17 @@ export default function Todo({ user, id, description, date, time, fetchData }) {
   };
   const deleteTodoItem = async () => {
     try {
-      const db = await new Promise((resolve, reject) => {
-        const request = window.indexedDB.open("myDatabase", 2);
-
-        request.onerror = (event) => {
-          console.error("Failed to open database:", event.target.error);
-          reject(event.target.error);
-        };
-
-        request.onsuccess = (event) => {
-          resolve(event.target.result);
-        };
-      });
-      const transaction = db.transaction(["todo"], "readwrite");
-      const objectStore = transaction.objectStore("todo");
-      const deleteRequest = objectStore.delete(id);
-
-      deleteRequest.onsuccess = () => {
-        console.log("Todo item deleted successfully");
-      };
-
-      deleteRequest.onerror = (event) => {
-        console.error("Error deleting todo item:", event.target.error);
-      };
-
-      db.close();
+      const { error } = await Supabase.database
+        .from("todo_table")
+        .delete()
+        .eq("id", `${id}`);
+      if (error) {
+        throw error;
+      }
       fetchData();
     } catch (error) {
       alert("ERROR! Check your internet connection");
-      console.error("Error fetching data:", error.message);
+      console.error("Error updating todo item:", error.message);
     }
   };
 
