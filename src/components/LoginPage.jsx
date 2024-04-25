@@ -3,15 +3,13 @@ import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-const database = Supabase.database;
-import { fetchData } from "./FetchData";
 
-export default function LoginPage({}) {
+export default function LoginPage() {
+  const database = Supabase.database;
   const navigate = useNavigate();
   const handleAuthStateChange = async (event) => {
     if (event === "SIGNED_IN") {
       navigate("/home");
-      fetchData();
     }
   };
   const hideEmailLogin = () => {
@@ -27,7 +25,7 @@ export default function LoginPage({}) {
         element.style.minWidth = "25vw";
         element.style.fontWeight = "400";
         element.style.color = "white";
-        element.style.backgroundColor = "black"
+        element.style.backgroundColor = "black";
       });
   };
 

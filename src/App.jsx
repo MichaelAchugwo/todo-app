@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AddItemModal from "./components/AddItemModal";
 import TodoList from "./components/TodoList";
-// import { fetchData } from "./components/FetchData";
 import getUserData from "./components/GetUserData";
 
 function App() {

@@ -5,6 +5,9 @@ import { useEffect } from "react";
 const database = Supabase.database;
 
 export default function LogoutPage() {
+  useEffect(() => {
+    logUserOut();
+  }, []);
   const navigate = useNavigate();
   const logUserOut = async () => {
     try {
@@ -15,13 +18,11 @@ export default function LogoutPage() {
       navigate("/");
     } catch (error) {
       console.error(error.message);
-      alert("Check your internet connection")
-      navigate("/home")
+      alert("Check your internet connection");
+      navigate("/home");
     }
   };
-  useEffect(() => {
-    logUserOut();
-  }, []);
+
   return (
     <>
       <div className="min-h-screen flex place-items-center justify-center">

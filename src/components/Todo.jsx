@@ -20,8 +20,6 @@ export default function Todo({ id, description, date, time, fetchData }) {
   const [editItemDate, setEditItemDate] = useState("");
   const [editItemTime, setEditItemTime] = useState("");
   const [daysLeft, setDaysLeft] = useState("");
-  const [minutesLeft, setMinutesLeft] = useState();
-  const [db, setDB] = useState();
 
   const showEditItemModal = (description, date, time) => {
     setShowComponent2(true);
