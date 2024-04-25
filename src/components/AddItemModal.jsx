@@ -46,7 +46,7 @@ export default function AddItemModal({ user, onClose, reloadPage }) {
         reloadPage();
       } catch (error) {
         alert("ERROR! Check your internet connection");
-        console.log("Error:", error);
+        console.error("Error:", error);
       }
     }
   };

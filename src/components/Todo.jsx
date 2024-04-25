@@ -3,7 +3,17 @@ import EditItemModal from "./EditItemModal";
 import DeleteItemModal from "./DeleteItemModal";
 import Supabase from "./Supabase";
 
-export default function Todo({ user, id, description, date, time, fetchData }) {
+export default function Todo({ id, description, date, time, fetchData }) {
+  useEffect(() => {
+    getMinutes();
+    const intervalId = setInterval(() => {
+      getMinutes();
+    }, 60000);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [time]);
+
   const [showEditModal, setShowComponent2] = useState(false);
   const [showDeleteModal, setShowComponent3] = useState(false);
   const [editItemDescription, setEditItemDescription] = useState("");
@@ -93,11 +103,11 @@ export default function Todo({ user, id, description, date, time, fetchData }) {
   let currentDate = new Date();
   const differenceInMs = todoDate.getTime() - currentDate.getTime();
   const differenceInDays = Math.ceil(differenceInMs / (1000 * 60 * 60 * 24));
-  setMinutesLeft(differenceInMs);
 
   const fetchNewData = () => {
     fetchData();
   };
+
   const getMinutes = () => {
     let [todoHours, todoMinutes, todoSeconds] = time.split(":").map(Number);
     let currentHours = new Date().getHours();
@@ -117,17 +127,7 @@ export default function Todo({ user, id, description, date, time, fetchData }) {
     }
   };
 
-  useEffect(() => {
-    getMinutes();
-    const intervalId = setInterval(() => {
-      getMinutes();
-    }, 60000);
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [time]);
-
-  if (minutesLeft > 0) {
+  if (differenceInMs > 0) {
     return (
       <>
         {showEditModal && (

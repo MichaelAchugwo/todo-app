@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Todo from "./Todo";
 
-export default function TodoList({ fetch, todo_user, userData }) {
+export default function TodoList({ fetch,  userData }) {
   const fetchNewData = () => {
     fetch();
   };
@@ -13,7 +13,6 @@ export default function TodoList({ fetch, todo_user, userData }) {
       {userData?.map((todo, index) => (
         <Todo
           key={index}
-          user={todo_user}
           id={todo.id}
           description={todo.description}
           date={todo.date}

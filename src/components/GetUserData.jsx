@@ -3,23 +3,8 @@ import Supabase from "./Supabase";
 const database = Supabase.database;
 
 const getUserData = async () => {
-  let data;
   let user;
-  let logInPic;
-  const toggleLogOut = (loginBtn) => {
-    if (loginBtn === "") {
-      loginBtn = (
-        <a
-          className="pr-2 pl-2 pb-1 md:pb-0 md:pl-0 font-semibold"
-          href="/logout"
-        >
-          Logout
-        </a>
-      );
-    } else {
-      loginBtn = "";
-    }
-  };
+  let userData;
   await database.auth.getUser().then((value) => {
     if (value.data?.user) {
       user = value.data.user;
@@ -27,7 +12,16 @@ const getUserData = async () => {
       return user;
     }
   });
-  return { user };
+  const { data: todoList, error } = await Supabase.database
+    .from("todo_table")
+    .select("*")
+    .eq("email", user.email)
+    .order("date");
+  if (error) {
+    throw error;
+  }
+  userData = todoList;
+  return { user, userData };
 };
 
 export default getUserData;

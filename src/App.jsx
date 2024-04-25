@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AddItemModal from "./components/AddItemModal";
 import TodoList from "./components/TodoList";
-import { fetchData } from "./components/FetchData";
+// import { fetchData } from "./components/FetchData";
 import getUserData from "./components/GetUserData";
 
 function App() {
@@ -28,8 +28,8 @@ function App() {
 
   const getData = async () => {
     try {
-      const { user } = await getUserData();
-      const { userData } = await fetchData(user);
+      const { user, userData } = await getUserData();
+      // const { userData } = await fetchData(user);
       setUser(user);
       setLoginPic(
         <>
@@ -118,7 +118,7 @@ function App() {
           </div>
         </div>
         {welcomeTab}
-        <TodoList userData={data} fetch={getData} todo_user={user} />
+        <TodoList userData={data} fetch={getData} />
       </div>
     </>
   );

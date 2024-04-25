@@ -12,7 +12,6 @@ export default function LoginPage({}) {
     if (event === "SIGNED_IN") {
       navigate("/home");
       fetchData();
-      console.log("successfully logged in");
     }
   };
   const hideEmailLogin = () => {

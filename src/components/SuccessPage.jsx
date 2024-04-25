@@ -12,7 +12,6 @@ export default function SuccessPage() {
     const getUserData = async () => {
       await database.auth.getUser().then((value) => {
         if (value.data?.user) {
-          console.log(value.data.user);
           setUser(value.data.user);
         }
       });
