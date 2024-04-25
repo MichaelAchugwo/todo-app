@@ -16,7 +16,7 @@ const getUserData = async () => {
     .from("todo_table")
     .select("*")
     .eq("email", user.email)
-    .order("date");
+    .order("date").order("time");
   if (error) {
     throw error;
   }

@@ -29,7 +29,6 @@ function App() {
   const getData = async () => {
     try {
       const { user, userData } = await getUserData();
-      // const { userData } = await fetchData(user);
       setUser(user);
       setLoginPic(
         <>
@@ -48,7 +47,6 @@ function App() {
       console.error("Error fetching user data:", error);
     }
   };
-
 
   const hideModal = () => {
     setShowComponent1(false);

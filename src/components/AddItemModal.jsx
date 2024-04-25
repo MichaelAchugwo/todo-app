@@ -6,9 +6,6 @@ export default function AddItemModal({ user, onClose, reloadPage }) {
   const hideModal = () => {
     onClose();
   };
-  const reloadApp = () => {
-    reloadPage();
-  };
   const addItemToDB = async (e) => {
     e.preventDefault();
     const inputDate = document.getElementById("todoDate").value;
@@ -41,13 +38,13 @@ export default function AddItemModal({ user, onClose, reloadPage }) {
           ])
           .select();
         setData(todoList);
-        alert("Added!")
-        hideModal();
-        reloadPage();
+        alert("Added!");
       } catch (error) {
         alert("ERROR! Check your internet connection");
         console.error("Error:", error);
       }
+      hideModal();
+      reloadPage();
     }
   };
   const getCurrentDate = () => {

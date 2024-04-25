@@ -38,7 +38,6 @@ export default function Todo({ id, description, date, time, fetchData }) {
     let todoDescription = document.getElementById("todo-name").value;
     let todoDate = document.getElementById("todo-date").value;
     let todoTime = document.getElementById("todo-time").value;
-
     try {
       const { error } = await Supabase.database
         .from("todo_table")
@@ -52,12 +51,12 @@ export default function Todo({ id, description, date, time, fetchData }) {
         throw error;
       }
       alert("Updated!");
-      hideModal();
-      fetchData();
     } catch (error) {
       alert("ERROR! Check your internet connection");
       console.error("Error updating todo item:", error.message);
     }
+    hideModal();
+    fetchData();
   };
 
   const showDeleteItemModal = () => {
@@ -73,12 +72,12 @@ export default function Todo({ id, description, date, time, fetchData }) {
         throw error;
       }
       alert("Deleted!");
-      hideModal();
-      fetchData();
     } catch (error) {
       alert("ERROR! Check your internet connection");
       console.error("Error updating todo item:", error.message);
     }
+    hideModal();
+    fetchData();
   };
 
   let todoDate = new Date(date);
@@ -103,7 +102,10 @@ export default function Todo({ id, description, date, time, fetchData }) {
   let currentDate = new Date();
   const differenceInMs = todoDate.getTime() - currentDate.getTime();
   const differenceInDays = Math.ceil(differenceInMs / (1000 * 60 * 60 * 24));
-
+  const [hours, minutes, seconds] = time.split(":").map(Number);
+  let todoTime = todoDate.setHours(hours, minutes, seconds, 0);
+  const timeLeft = todoDate.getTime() - currentDate.getTime();
+  console.log(timeLeft);
   const fetchNewData = () => {
     fetchData();
   };
@@ -127,7 +129,7 @@ export default function Todo({ id, description, date, time, fetchData }) {
     }
   };
 
-  if (differenceInMs > 0) {
+  if (timeLeft > 0) {
     return (
       <>
         {showEditModal && (
