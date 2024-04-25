@@ -74,7 +74,7 @@ export default function EditItemModal({
           <div className="pt-4">
             <input
               type="submit"
-              value="Add"
+              value="Edit"
               role="button"
               className="bg-green-800 text-white rounded-lg p-2 px-4 w-full"
             />

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Supabase from "./Supabase";
 
-export default function AddItemModal({ onClose, reloadPage }) {
+export default function AddItemModal({ user, onClose, reloadPage }) {
   const [data, setData] = useState([]);
   const hideModal = () => {
     onClose();
@@ -34,7 +34,10 @@ export default function AddItemModal({ onClose, reloadPage }) {
               time: `${document.getElementById("todoTime").value}`,
               description: `${
                 document.getElementById("todoDescription").value
-              }`,
+                }`,
+              email: user.email,
+              username: user.user_metadata.name,
+              user_id: user.id,
             },
           ])
           .select();

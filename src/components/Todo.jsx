@@ -3,7 +3,7 @@ import EditItemModal from "./EditItemModal";
 import DeleteItemModal from "./DeleteItemModal";
 import Supabase from "./Supabase";
 
-export default function Todo({ id, description, date, time, fetchData }) {
+export default function Todo({ user, id, description, date, time, fetchData }) {
   const [showEditModal, setShowComponent2] = useState(false);
   const [showDeleteModal, setShowComponent3] = useState(false);
   const [editItemDescription, setEditItemDescription] = useState("");
@@ -26,15 +26,14 @@ export default function Todo({ id, description, date, time, fetchData }) {
     let todoDate = document.getElementById("todo-date").value;
     let todoTime = document.getElementById("todo-time").value;
     try {
-      const { data: updatedTodoItem, error } = await Supabase.database
+      const { error } = await Supabase.database
         .from("todo_table")
         .update({
           date: `${todoDate}`,
           description: `${todoDescription}`,
           time: `${todoTime}`,
         })
-        .eq("id", `${id}`)
-        .select();
+        .eq("id", `${id}`);
       if (error) {
         throw error;
       }
@@ -102,6 +101,8 @@ export default function Todo({ id, description, date, time, fetchData }) {
       const hoursLeft = Math.floor(differenceInMinutes / 60);
       const minutesLeft = differenceInMinutes % 60;
       setDaysLeft(`${hoursLeft}h ${minutesLeft}m left`);
+    } else if (differenceInDays === 1) {
+      setDaysLeft("1 day left");
     } else {
       setDaysLeft(`${differenceInDays} days left`);
     }
@@ -133,7 +134,7 @@ export default function Todo({ id, description, date, time, fetchData }) {
         {showDeleteModal && (
           <DeleteItemModal onClose={hideModal} onDelete={deleteTodoItem} />
         )}
-        <div className="bg-gray-100 inline-block p-4 pb-6 rounded-xl shadow-lg">
+        <div className="border-x-2 border-y-2 border-b-8 border-gray-300 inline-block p-4 pb-6 rounded-xl shadow-sm">
           <div className="flex justify-between">
             <h1 className="text-xl inline-block font-semibold max-w-64">
               {description.toUpperCase()}
