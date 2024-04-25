@@ -93,6 +93,7 @@ export default function Todo({ user, id, description, date, time, fetchData }) {
   let currentDate = new Date();
   const differenceInMs = todoDate.getTime() - currentDate.getTime();
   const differenceInDays = Math.ceil(differenceInMs / (1000 * 60 * 60 * 24));
+  setMinutesLeft(differenceInMs);
 
   const fetchNewData = () => {
     fetchData();
@@ -103,7 +104,6 @@ export default function Todo({ user, id, description, date, time, fetchData }) {
     let currentMinutes = new Date().getMinutes();
     let differenceInMinutes =
       todoHours * 60 + todoMinutes - (currentHours * 60 + currentMinutes);
-    setMinutesLeft(differenceInMinutes);
     if (differenceInMinutes < 60 && differenceInDays < 1) {
       setDaysLeft(`${differenceInMinutes}m left`);
     } else if (currentHours < 24 && differenceInDays < 1) {
