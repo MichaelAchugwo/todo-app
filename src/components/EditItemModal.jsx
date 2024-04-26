@@ -5,8 +5,8 @@ export default function EditItemModal({
   date,
   time,
   notifications,
-  onClose,
   onSave,
+  onClose
 }) {
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedDate, setEditedDate] = useState(date);
@@ -29,7 +29,7 @@ export default function EditItemModal({
             className="fa-solid fa-xmark text-black"
             id="closeModalBtn"
             role="button"
-            onClick={hideEditModal}
+            onClick={onClose}
           ></i>
         </p>
         <h1 className="text-2xl text-center font-semibold mb-2">
