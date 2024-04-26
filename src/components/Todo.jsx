@@ -3,7 +3,14 @@ import EditItemModal from "./EditItemModal";
 import DeleteItemModal from "./DeleteItemModal";
 import Supabase from "./Supabase";
 
-export default function Todo({ id, description, date, time, fetchData }) {
+export default function Todo({
+  id,
+  description,
+  date,
+  time,
+  notifications,
+  fetchData,
+}) {
   useEffect(() => {
     getMinutes();
     const intervalId = setInterval(() => {
@@ -19,13 +26,20 @@ export default function Todo({ id, description, date, time, fetchData }) {
   const [editItemDescription, setEditItemDescription] = useState("");
   const [editItemDate, setEditItemDate] = useState("");
   const [editItemTime, setEditItemTime] = useState("");
+  const [editItemNotification, setEditItemNotification] = useState("");
   const [daysLeft, setDaysLeft] = useState("");
+  let notificationIcon = <i class="fa-regular fa-bell"></i>;
 
-  const showEditItemModal = (description, date, time) => {
+  if (notifications === true) {
+    notificationIcon = <i class="fa-solid fa-bell text-yellow-600"></i>;
+  }
+
+  const showEditItemModal = (description, date, time, notifications) => {
     setShowComponent2(true);
     setEditItemDescription(description);
     setEditItemDate(date);
     setEditItemTime(time);
+    setEditItemNotification(notifications);
   };
   const hideModal = () => {
     setShowComponent2(false);
@@ -36,6 +50,10 @@ export default function Todo({ id, description, date, time, fetchData }) {
     let todoDescription = document.getElementById("todo-name").value;
     let todoDate = document.getElementById("todo-date").value;
     let todoTime = document.getElementById("todo-time").value;
+    let todoNotification = true;
+    if (document.getElementById("todo-notification").selectedIndex === 1) {
+      todoNotification = false;
+    }
     try {
       const { error } = await Supabase.database
         .from("todo_table")
@@ -43,6 +61,7 @@ export default function Todo({ id, description, date, time, fetchData }) {
           date: `${todoDate}`,
           description: `${todoDescription}`,
           time: `${todoTime}`,
+          notifications: todoNotification,
         })
         .eq("id", `${id}`);
       if (error) {
@@ -78,6 +97,29 @@ export default function Todo({ id, description, date, time, fetchData }) {
     fetchData();
   };
 
+  const changeNotification = async () => {
+    try {
+      const { error } = await Supabase.database
+        .from("todo_table")
+        .update({
+          notifications: !notifications,
+        })
+        .eq("id", `${id}`);
+      if (error) {
+        throw error;
+      }
+      if (!notifications === false) {
+        alert("Notifications are now turned off for " + description);
+      } else if (!notifications === true) {
+        alert("Notifications are now turned on for " + description);
+      }
+    } catch (error) {
+      alert("ERROR! Check your internet connection");
+      console.error("Error changing notification settings:", error.message);
+    }
+    fetchData();
+  };
+
   let todoDate = new Date(date);
   let day = todoDate.getDate();
   const months = [
@@ -103,7 +145,6 @@ export default function Todo({ id, description, date, time, fetchData }) {
   const [hours, minutes, seconds] = time.split(":").map(Number);
   let todoTime = todoDate.setHours(hours, minutes, seconds, 0);
   const timeLeft = todoDate.getTime() - currentDate.getTime();
-  console.log(timeLeft);
   const fetchNewData = () => {
     fetchData();
   };
@@ -137,6 +178,7 @@ export default function Todo({ id, description, date, time, fetchData }) {
             description={editItemDescription}
             date={editItemDate}
             time={editItemTime}
+            notifications={editItemNotification}
             fetchData={fetchNewData}
           />
         )}
@@ -161,18 +203,21 @@ export default function Todo({ id, description, date, time, fetchData }) {
 
           <div className="text-center">
             <button
-              id="editTodoBtn1"
               className="bg-blue-700 hover:bg-blue-600 text-white font-medium p-2 px-4 rounded-lg mr-2"
-              onClick={() => showEditItemModal(description, date, time)}
+              onClick={() =>
+                showEditItemModal(description, date, time, notifications)
+              }
             >
               Edit
             </button>
             <button
-              id="deleteTodoBtn1"
               className="bg-red-700 hover:bg-red-600 text-white font-medium p-2 px-4 rounded-lg"
               onClick={showDeleteItemModal}
             >
               Delete
+            </button>
+            <button className="text-2xl px-2" onClick={changeNotification}>
+              {notificationIcon}
             </button>
           </div>
         </div>

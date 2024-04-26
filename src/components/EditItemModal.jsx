@@ -4,12 +4,14 @@ export default function EditItemModal({
   description,
   date,
   time,
+  notifications,
   onClose,
   onSave,
 }) {
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedDate, setEditedDate] = useState(date);
   const [editedTime, setEditedTime] = useState(time);
+  const [editedNotification, setEditedNotification] = useState(notifications);
   const hideEditModal = () => {
     onClose();
   };
@@ -18,6 +20,10 @@ export default function EditItemModal({
     onSave();
     hideEditModal();
   };
+  let selectedOption = "On";
+  if (editedNotification == false) {
+    selectedOption = "Off" 
+  }
 
   return (
     <div className="z-50 modal absolute top-0 left-0 min-w-full min-h-screen flex place-items-center justify-center bg-black bg-opacity-70">
@@ -69,6 +75,19 @@ export default function EditItemModal({
               value={editedTime}
               onChange={(e) => setEditedTime(e.target.value)}
             />
+          </div>
+          <div>
+            <label htmlFor="time">Notifications</label>
+            <select
+              name="notifications"
+              id="todo-notification"
+              className="p-2 rounded-lg ml-3 w-1/5"
+              value={selectedOption}
+              onChange={(e) => setEditedNotification(e.target.value)}
+            >
+              <option value="On">On</option>
+              <option value="Off">Off</option>
+            </select>
           </div>
           <div className="pt-4">
             <input

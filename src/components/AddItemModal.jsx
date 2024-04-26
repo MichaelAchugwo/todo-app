@@ -17,7 +17,12 @@ export default function AddItemModal({ user, onClose, reloadPage }) {
       new Date(inputDate).getTime() + hours * 3600000 + minutes * 60000;
     const currentTime = currentDate.getTime() + 3600000;
     const isDayAfter2100 = new Date(inputDate).getTime() > 4132252800000;
-
+    let notificationBoolean = true;
+    const notificationInput =
+      document.getElementById("notificationSelect").selectedIndex;
+    if (notificationInput === 1) {
+      notificationBoolean = false;
+    }
     if (inputTime < currentTime || isDayAfter2100) {
       alert("Choose a valid date and time. Between now and year 2100");
     } else {
@@ -34,6 +39,7 @@ export default function AddItemModal({ user, onClose, reloadPage }) {
               email: user.email,
               username: user.user_metadata.name,
               user_id: user.id,
+              notifications: notificationBoolean,
             },
           ])
           .select();
@@ -112,6 +118,17 @@ export default function AddItemModal({ user, onClose, reloadPage }) {
               defaultValue={getCurrentTime()}
               required
             />
+          </div>
+          <div>
+            <label htmlFor="time">Notifications</label>
+            <select
+              name="notifications"
+              id="notificationSelect"
+              className="p-2 rounded-lg ml-3 w-1/5"
+            >
+              <option value="On">On</option>
+              <option value="Off">Off</option>
+            </select>
           </div>
           <div className="pt-4">
             <input

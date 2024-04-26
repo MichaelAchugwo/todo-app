@@ -11,15 +11,29 @@
     <meta property="og:image" content="./thumbnail.png" />
     <meta property="og:image:width" content="630" />
     <meta property="og:image:height" content="630" />
-    <meta
-      property="og:url"
-      content="https://todo-app-993.netlify.app/"
-    />
+    <meta property="og:url" content="https://todo-app-993.netlify.app/" />
     <meta property="og:site_name" content="Todo Assistant" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
     <link rel="icon" href="./icon.png" type="image/x-icon" />
     <title>Todo Assistant</title>
+    <script
+      src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
+      defer
+    ></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(function (OneSignal) {
+        OneSignal.init({
+          appId: "42f8420d-160c-47c2-9df3-434e57d89276",
+          safari_web_id:
+            "web.onesignal.auto.59c3dafd-0ede-48fd-b632-a1606d17d410",
+          notifyButton: {
+            enable: true,
+          },
+        });
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>

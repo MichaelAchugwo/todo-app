@@ -56,7 +56,6 @@ function App() {
   };
   let welcomeTab = " ";
   let pageClass = "min-h-screen p-9 pt-2 md:p-9";
-  console.log(user)
   if (user === undefined) {
     pageClass = "min-h-screen";
     welcomeTab = (
