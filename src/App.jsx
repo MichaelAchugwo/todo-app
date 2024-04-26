@@ -4,17 +4,29 @@ import { useNavigate } from "react-router-dom";
 import AddItemModal from "./components/AddItemModal";
 import TodoList from "./components/TodoList";
 import getUserData from "./components/GetUserData";
+import NotificationModal from "./components/NotificationModal";
 
 function App() {
   useEffect(() => {
     getData();
+    checkNotifications();
   }, []);
 
   const [data, setData] = useState([]);
   const [user, setUser] = useState();
   const [logInPic, setLoginPic] = useState();
   const [showAddModal, setShowComponent1] = useState(false);
+  const [showNotificationModal, setShowNotification] = useState(false);
   const [isDisplayed, setIsDisplayed] = useState(false);
+
+  const checkNotifications = () => {
+    const permission = Notification.permission;
+    if (permission === "granted") {
+      setShowNotification(false)
+    } else {
+      setShowNotification(true)
+    }
+  };
 
   const toggleLogOut = () => {
     setIsDisplayed((prevState) => !prevState);
@@ -49,6 +61,7 @@ function App() {
 
   const hideModal = () => {
     setShowComponent1(false);
+    setShowNotification(false);
   };
 
   const showAddItemModal = () => {
@@ -90,6 +103,7 @@ function App() {
   }
   return (
     <>
+      {showNotificationModal && (<NotificationModal onClose={hideModal} />)}
       {showAddModal && (
         <AddItemModal onClose={hideModal} reloadPage={getData} user={user} />
       )}
