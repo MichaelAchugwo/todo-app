@@ -11,7 +11,7 @@ function App() {
   }, []);
 
   const [data, setData] = useState([]);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState();
   const [logInPic, setLoginPic] = useState();
   const [showAddModal, setShowComponent1] = useState(false);
   const [isDisplayed, setIsDisplayed] = useState(false);
@@ -56,6 +56,7 @@ function App() {
   };
   let welcomeTab = " ";
   let pageClass = "min-h-screen p-9 pt-2 md:p-9";
+  console.log(user)
   if (user === undefined) {
     pageClass = "min-h-screen";
     welcomeTab = (
