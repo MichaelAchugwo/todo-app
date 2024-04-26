@@ -179,11 +179,15 @@ export default function Todo({
             date={editItemDate}
             time={editItemTime}
             notifications={editItemNotification}
-            fetchData={fetchNewData}
+            fetch={fetchNewData}
           />
         )}
         {showDeleteModal && (
-          <DeleteItemModal onClose={hideModal} onDelete={deleteTodoItem} />
+          <DeleteItemModal
+            onClose={hideModal}
+            onDelete={deleteTodoItem}
+            fetch={fetchNewData}
+          />
         )}
         <div className="border-x-2 border-y-2 border-b-8 border-gray-300 inline-block p-4 pb-6 rounded-xl shadow-sm">
           <div className="flex justify-between">

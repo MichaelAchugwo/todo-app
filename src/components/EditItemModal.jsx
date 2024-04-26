@@ -12,13 +12,9 @@ export default function EditItemModal({
   const [editedDate, setEditedDate] = useState(date);
   const [editedTime, setEditedTime] = useState(time);
   const [editedNotification, setEditedNotification] = useState(notifications);
-  const hideEditModal = () => {
-    onClose();
-  };
   const handleSave = (e) => {
     e.preventDefault();
     onSave();
-    hideEditModal();
   };
   let selectedOption = "On";
   if (editedNotification == false) {
@@ -26,7 +22,7 @@ export default function EditItemModal({
   }
 
   return (
-    <div className="z-50 modal absolute top-0 left-0 min-w-full min-h-screen flex place-items-center justify-center bg-black bg-opacity-70">
+    <div className="z-50 modal fixed top-0 left-0 min-w-full min-h-screen flex place-items-center justify-center bg-black bg-opacity-70">
       <div className="w-5/6 md:w-1/2 bg-gray-200 p-9 pt-6 rounded-3xl">
         <p className="text-3xl text-right">
           <i

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import AddItemModal from "./components/AddItemModal";
 import TodoList from "./components/TodoList";
 import getUserData from "./components/GetUserData";
+import fetchData from "./components/FetchData";
 
 function App() {
   useEffect(() => {
@@ -18,6 +19,11 @@ function App() {
 
   const toggleLogOut = () => {
     setIsDisplayed((prevState) => !prevState);
+  };
+
+  const reloadComponents = async () => {
+    const data = await fetchData(user);
+    setData(data);
   };
 
   const navigate = useNavigate();
@@ -49,7 +55,6 @@ function App() {
 
   const hideModal = () => {
     setShowComponent1(false);
-    setShowNotification(false);
   };
 
   const showAddItemModal = () => {
@@ -92,7 +97,7 @@ function App() {
   return (
     <>
       {showAddModal && (
-        <AddItemModal onClose={hideModal} reloadPage={getData} user={user} />
+        <AddItemModal onClose={hideModal} user={user} fetch={reloadComponents} />
       )}
 
       <div className={pageClass}>
@@ -116,7 +121,7 @@ function App() {
           </div>
         </div>
         {welcomeTab}
-        <TodoList userData={data} fetch={getData} />
+        <TodoList userData={data} fetch={reloadComponents} />
       </div>
     </>
   );

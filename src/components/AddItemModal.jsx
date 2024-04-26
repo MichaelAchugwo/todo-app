@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Supabase from "./Supabase";
 
-export default function AddItemModal({ user, onClose, reloadPage }) {
+export default function AddItemModal({ user, onClose, fetch }) {
   const [data, setData] = useState([]);
   const hideModal = () => {
     onClose();
@@ -17,6 +17,7 @@ export default function AddItemModal({ user, onClose, reloadPage }) {
       new Date(inputDate).getTime() + hours * 3600000 + minutes * 60000;
     const currentTime = currentDate.getTime() + 3600000;
     const isDayAfter2100 = new Date(inputDate).getTime() > 4132252800000;
+
     let notificationBoolean = true;
     const notificationInput =
       document.getElementById("notificationSelect").selectedIndex;
@@ -44,13 +45,15 @@ export default function AddItemModal({ user, onClose, reloadPage }) {
           ])
           .select();
         setData(todoList);
+        if (notificationBoolean === true) {
+        }
         alert("Added!");
       } catch (error) {
         alert("ERROR! Check your internet connection");
         console.error("Error:", error);
       }
       hideModal();
-      reloadPage();
+      fetch();
     }
   };
   const getCurrentDate = () => {
@@ -70,7 +73,7 @@ export default function AddItemModal({ user, onClose, reloadPage }) {
   };
 
   return (
-    <div className="z-50 modal absolute min-w-full min-h-screen flex place-items-center justify-center bg-black bg-opacity-70">
+    <div className="z-50 modal fixed min-w-full min-h-screen flex place-items-center justify-center bg-black bg-opacity-70">
       <div className="w-5/6 md:w-1/2 bg-gray-200 p-9 pt-6 rounded-3xl">
         <p className="text-3xl text-right">
           <i
@@ -120,7 +123,7 @@ export default function AddItemModal({ user, onClose, reloadPage }) {
             />
           </div>
           <div>
-            <label htmlFor="time">Notifications</label>
+            <label htmlFor="notificationSelect">Reminder</label>
             <select
               name="notifications"
               id="notificationSelect"
