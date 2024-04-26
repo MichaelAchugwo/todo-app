@@ -28,10 +28,10 @@ export default function Todo({
   const [editItemTime, setEditItemTime] = useState("");
   const [editItemNotification, setEditItemNotification] = useState("");
   const [daysLeft, setDaysLeft] = useState("");
-  let notificationIcon = <i class="fa-regular fa-bell"></i>;
+  let notificationIcon = <i className="fa-regular fa-bell"></i>;
 
   if (notifications === true) {
-    notificationIcon = <i class="fa-solid fa-bell text-yellow-600"></i>;
+    notificationIcon = <i className="fa-solid fa-bell text-yellow-600"></i>;
   }
 
   const showEditItemModal = (description, date, time, notifications) => {

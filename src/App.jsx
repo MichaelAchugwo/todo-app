@@ -1,6 +1,7 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import AddItemModal from "./components/AddItemModal";
 import TodoList from "./components/TodoList";
 import getUserData from "./components/GetUserData";
@@ -22,9 +23,9 @@ function App() {
   const checkNotifications = () => {
     const permission = Notification.permission;
     if (permission === "granted") {
-      setShowNotification(false)
+      setShowNotification(false);
     } else {
-      setShowNotification(true)
+      setShowNotification(true);
     }
   };
 
@@ -103,7 +104,7 @@ function App() {
   }
   return (
     <>
-      {showNotificationModal && (<NotificationModal onClose={hideModal} />)}
+      {showNotificationModal && <NotificationModal onClose={hideModal} />}
       {showAddModal && (
         <AddItemModal onClose={hideModal} reloadPage={getData} user={user} />
       )}
