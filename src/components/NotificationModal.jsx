@@ -16,9 +16,7 @@ export default function NotificationModal({ onClose }) {
         console.error("Error allowing notifications: ", error);
       }
     }
-    if (Notification.permission === "granted") {
-      onClose();
-    }
+    onClose();
   };
   return (
     <div className="z-50 modal absolute left-0 top-0 min-w-full min-h-screen flex flex-col place-items-center justify-center bg-black/90 backdrop-opacity-60 backdrop-blur-lg">
