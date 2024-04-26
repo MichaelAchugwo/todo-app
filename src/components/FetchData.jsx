@@ -12,7 +12,6 @@ const fetchData = async (user) => {
   if (error) {
     throw error;
   }
-  console.log("Fetched");
   return todoList;
 };
 
