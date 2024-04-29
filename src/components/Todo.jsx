@@ -144,7 +144,7 @@ export default function Todo({
   const differenceInDays = Math.ceil(differenceInMs / (1000 * 60 * 60 * 24));
   const [hours, minutes, seconds] = time.split(":").map(Number);
   let todoTime = todoDate.setHours(hours, minutes, seconds, 0);
-  const timeLeft = todoDate.getTime() - currentDate.getTime();
+  const timeLeft = todoDate.getTime() + todoTime - currentDate.getTime();
   const fetchNewData = () => {
     fetchData();
   };
