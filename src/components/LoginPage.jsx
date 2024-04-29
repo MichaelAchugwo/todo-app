@@ -7,9 +7,9 @@ import { useEffect } from "react";
 export default function LoginPage() {
   const database = Supabase.database;
   const navigate = useNavigate();
-  const handleAuthStateChange = async (event) => {
+  const handleAuthStateChange = async (event, session) => {
     if (event === "SIGNED_IN") {
-      navigate("/home");
+      navigate("/");
     }
   };
   const hideEmailLogin = () => {
@@ -32,7 +32,7 @@ export default function LoginPage() {
   useEffect(() => {
     hideEmailLogin();
     database.auth.onAuthStateChange(handleAuthStateChange);
-  }, []);
+  });
 
   return (
     <div

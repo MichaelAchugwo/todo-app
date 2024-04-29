@@ -5,10 +5,18 @@ import AddItemModal from "./components/AddItemModal";
 import TodoList from "./components/TodoList";
 import getUserData from "./components/GetUserData";
 import fetchData from "./components/FetchData";
+import Supabase from "./components/Supabase";
+import Loader from "./components/Loader";
 
 function App() {
   useEffect(() => {
-    getData();
+    Supabase.database.auth.onAuthStateChange((event, session) => {
+      if (session === null) {
+        navigate("/login");
+      } else {
+        getData();
+      }
+    });
   }, []);
 
   const [data, setData] = useState([]);
@@ -16,22 +24,24 @@ function App() {
   const [logInPic, setLoginPic] = useState();
   const [showAddModal, setShowComponent1] = useState(false);
   const [isDisplayed, setIsDisplayed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [welcomeTab, setWelcome] = useState()
 
   const toggleLogOut = () => {
     setIsDisplayed((prevState) => !prevState);
   };
 
   const reloadComponents = async () => {
+    hideModal();
     const data = await fetchData(user);
     setData(data);
+    setLoading(false);
   };
 
   const navigate = useNavigate();
-  const goToLogin = () => {
-    navigate("/");
-  };
 
   const getData = async () => {
+    setLoading(true);
     try {
       const { user, userData } = await getUserData();
       setUser(user);
@@ -48,9 +58,25 @@ function App() {
         </>
       );
       setData(userData);
+      const [firstName, lastName] = user.user_metadata.name.split(" ");
+      setWelcome(
+        <div className="flex flex-col md:flex-row text-center justify-between mb-5">
+          <h1 className="text-2xl font-semibold mb-5 md:mb-0">
+            Welcome Back, <span className="text-red-500">{firstName}</span>
+          </h1>
+          <button
+            id="addTodoBtn"
+            className="bg-blue-700 hover:bg-blue-600 text-lg p-2 px-4 text-white rounded-md"
+            onClick={showAddItemModal}
+          >
+            Add New Item
+          </button>
+        </div>
+      );
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
+    setLoading(false);
   };
 
   const hideModal = () => {
@@ -60,47 +86,18 @@ function App() {
   const showAddItemModal = () => {
     setShowComponent1(true);
   };
-  let welcomeTab = " ";
-  let pageClass = "min-h-screen p-9 pt-2 md:p-9";
-  if (user === undefined) {
-    pageClass = "min-h-screen";
-    welcomeTab = (
-      <div className="flex bg-white place-items-center justify-center min-w-full min-h-screen absolute top-0">
-        <div className="text-center">
-          <h1 className="text-2xl font-normal">You need to login</h1>
-          <button
-            className="bg-blue-700 text-white p-2 px-4 rounded-lg mt-3"
-            onClick={goToLogin}
-          >
-            Login
-          </button>
-        </div>
-      </div>
-    );
-  } else if (user.user_metadata) {
-    const [firstName, lastName] = user.user_metadata.name.split(" ");
-    welcomeTab = (
-      <div className="flex flex-col md:flex-row text-center justify-between mb-5">
-        <h1 className="text-2xl font-semibold mb-5 md:mb-0">
-          Welcome Back, <span className="text-red-500">{firstName}</span>
-        </h1>
-        <button
-          id="addTodoBtn"
-          className="bg-blue-700 hover:bg-blue-600 text-lg p-2 px-4 text-white rounded-md"
-          onClick={showAddItemModal}
-        >
-          Add New Item
-        </button>
-      </div>
-    );
-  }
   return (
     <>
       {showAddModal && (
-        <AddItemModal onClose={hideModal} user={user} fetch={reloadComponents} />
+        <AddItemModal
+          onClose={hideModal}
+          user={user}
+          fetch={reloadComponents}
+          setLoading={setLoading}
+          setShow={setShowComponent1}
+        />
       )}
-
-      <div className={pageClass}>
+      <div className="min-h-screen p-9">
         <div className="flex justify-between place-items-center mb-9 sticky top-0 bg-white border-b-2">
           <a
             href="/home"
@@ -120,8 +117,14 @@ function App() {
             )}
           </div>
         </div>
-        {welcomeTab}
-        <TodoList userData={data} fetch={reloadComponents} />
+        <Loader when={loading}>
+          {welcomeTab}
+          <TodoList
+            userData={data}
+            fetch={reloadComponents}
+            setLoading={setLoading}
+          />
+        </Loader>
       </div>
     </>
   );

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Todo from "./Todo";
 
-export default function TodoList({ fetch, userData }) {
+export default function TodoList({ fetch, userData, setLoading }) {
   const fetchNewData = () => {
     fetch();
   };
@@ -19,6 +19,7 @@ export default function TodoList({ fetch, userData }) {
           time={todo.time}
           notifications={todo.notifications}
           fetchData={fetchNewData}
+          setLoading={setLoading}
         />
       ))}
     </div>

@@ -10,6 +10,7 @@ export default function Todo({
   time,
   notifications,
   fetchData,
+  setLoading,
 }) {
   useEffect(() => {
     getMinutes();
@@ -47,6 +48,7 @@ export default function Todo({
   };
 
   const updateTodoItem = async () => {
+    setLoading(true);
     let todoDescription = document.getElementById("todo-name").value;
     let todoDate = document.getElementById("todo-date").value;
     let todoTime = document.getElementById("todo-time").value;
@@ -72,7 +74,7 @@ export default function Todo({
       alert("ERROR! Check your internet connection");
       console.error("Error updating todo item:", error.message);
     }
-    hideModal();
+    setShowComponent2(false);
     fetchData();
   };
 
@@ -80,6 +82,7 @@ export default function Todo({
     setShowComponent3(true);
   };
   const deleteTodoItem = async () => {
+    setLoading(true);
     try {
       const { error } = await Supabase.database
         .from("todo_table")
@@ -93,7 +96,7 @@ export default function Todo({
       alert("ERROR! Check your internet connection");
       console.error("Error updating todo item:", error.message);
     }
-    hideModal();
+    setShowComponent3(false);
     fetchData();
   };
 

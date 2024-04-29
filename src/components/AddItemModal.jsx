@@ -1,12 +1,19 @@
 import React, { useState } from "react";
 import Supabase from "./Supabase";
 
-export default function AddItemModal({ user, onClose, fetch }) {
+export default function AddItemModal({
+  user,
+  onClose,
+  fetch,
+  setLoading,
+  setShow,
+}) {
   const [data, setData] = useState([]);
   const hideModal = () => {
     onClose();
   };
   const addItemToDB = async (e) => {
+    setLoading(true);
     e.preventDefault();
     const inputDate = document.getElementById("todoDate").value;
     const currentDate = new Date();
@@ -21,6 +28,7 @@ export default function AddItemModal({ user, onClose, fetch }) {
     let notificationBoolean = true;
     const notificationInput =
       document.getElementById("notificationSelect").selectedIndex;
+    setShow(false);
     if (notificationInput === 1) {
       notificationBoolean = false;
     }
@@ -47,13 +55,12 @@ export default function AddItemModal({ user, onClose, fetch }) {
         setData(todoList);
         if (notificationBoolean === true) {
         }
-        alert("Added!");
       } catch (error) {
         alert("ERROR! Check your internet connection");
         console.error("Error:", error);
       }
-      hideModal();
       fetch();
+      alert("Added!");
     }
   };
   const getCurrentDate = () => {
