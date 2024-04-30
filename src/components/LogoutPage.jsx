@@ -31,7 +31,7 @@ export default function LogoutPage() {
           color: "white",
         },
       }).showToast();
-      navigate("/home");
+      navigate("/");
     }
   };
 

@@ -100,7 +100,7 @@ function App() {
       <div className="min-h-screen p-9 pt-2">
         <div className="flex justify-between place-items-center mb-9 sticky top-0 bg-white border-b-2">
           <a
-            href="/home"
+            href="/"
             className="text-2xl font-semibold inline-block text-blue-700"
           >
             <i className="fa-solid fa-list pr-3"></i>TODO Assistant
