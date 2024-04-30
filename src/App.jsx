@@ -8,6 +8,8 @@ import getUserData from "./components/extras/GetUserData";
 import fetchData from "./components/extras/FetchData";
 import Supabase from "./components/extras/Supabase";
 import Loader from "./components/extras/Loader";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 
 function App() {
   useEffect(() => {
@@ -26,7 +28,8 @@ function App() {
   const [showAddModal, setShowComponent1] = useState(false);
   const [isDisplayed, setIsDisplayed] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [welcomeTab, setWelcome] = useState()
+  const [welcomeTab, setWelcome] = useState();
+  const [darkMode, setDarkMode] = useState(false);
 
   const toggleLogOut = () => {
     setIsDisplayed((prevState) => !prevState);
@@ -61,7 +64,7 @@ function App() {
       const [firstName, lastName] = user.user_metadata.name.split(" ");
       setWelcome(
         <div className="flex flex-col md:flex-row text-center justify-between mb-5">
-          <h1 className="text-2xl font-semibold mb-5 md:mb-0">
+          <h1 className="text-2xl font-semibold mb-5 md:mb-0 dark:text-white">
             Welcome Back, <span className="text-red-500">{firstName}</span>
           </h1>
           <button
@@ -86,8 +89,11 @@ function App() {
   const showAddItemModal = () => {
     setShowComponent1(true);
   };
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
   return (
-    <>
+    <div className={darkMode ? "dark" : ""}>
       {showAddModal && (
         <AddItemModal
           onClose={hideModal}
@@ -97,11 +103,11 @@ function App() {
           setShow={setShowComponent1}
         />
       )}
-      <div className="min-h-screen p-9 pt-2">
-        <div className="flex justify-between place-items-center mb-9 sticky top-0 bg-white border-b-2">
+      <div className="min-h-screen p-9 pt-2 dark:bg-gray-800">
+        <div className="flex justify-between place-items-center mb-9 sticky top-0 bg-white dark:bg-gray-800 border-b-2">
           <a
             href="/"
-            className="text-2xl font-semibold inline-block text-blue-700"
+            className="text-2xl font-semibold inline-block text-blue-700 dark:text-white"
           >
             <i className="fa-solid fa-list pr-3"></i>TODO Assistant
           </a>
@@ -125,8 +131,15 @@ function App() {
             setLoading={setLoading}
           />
         </Loader>
+        <div
+          role="button"
+          className="fixed bottom-[30px] right-[30px] p-2 rounded-full bg-black text-white"
+          onClick={toggleDarkMode}
+        >
+          {darkMode ? <DarkModeIcon /> : <LightModeIcon />}
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 

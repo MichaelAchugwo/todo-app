@@ -282,14 +282,14 @@ export default function Todo({
             loading={loading}
           />
         )}
-        <div className="border-x-2 border-y-2 border-b-8 border-gray-300 inline-block p-4 pb-6 rounded-xl shadow-sm">
-          <div className="flex justify-between">
+        <div className="border-x-2 border-y-2 border-b-8 border-gray-300 inline-block p-4 pb-6 rounded-xl shadow-sm bg-gray-800 dark:bg-white">
+          <div className="flex justify-between text-white dark:text-black">
             <h1 className="text-xl inline-block font-semibold max-w-64">
               {description.toUpperCase()}
             </h1>
             <h1 className="text-lg inline-block font-medium">{daysLeft}</h1>
           </div>
-          <p className="py-5 text-center">
+          <p className="py-5 text-center text-white dark:text-black">
             <i
               className="fa fa-clock-o pr-2 text-xl text-fuchsia-500"
               aria-hidden="true"
