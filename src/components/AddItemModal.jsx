@@ -177,6 +177,7 @@ export default function AddItemModal({
               name="notifications"
               id="notificationSelect"
               className="p-2 rounded-lg ml-3 w-1/5"
+              value="Off"
             >
               <option value="On">On</option>
               <option value="Off">Off</option>
