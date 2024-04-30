@@ -104,7 +104,7 @@ function App() {
         />
       )}
       <div className="min-h-screen p-9 pt-2 dark:bg-gray-800">
-        <div className="flex justify-between place-items-center mb-9 sticky top-0 bg-white dark:bg-gray-800 border-b-2">
+        <div className="flex justify-between place-items-center mb-9 sticky top-0 bg-white dark:bg-gray-800">
           <a
             href="/"
             className="text-2xl font-semibold inline-block text-blue-700 dark:text-white"
