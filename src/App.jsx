@@ -96,7 +96,7 @@ function App() {
           setShow={setShowComponent1}
         />
       )}
-      <div className="min-h-screen p-9">
+      <div className="min-h-screen p-9 pt-4">
         <div className="flex justify-between place-items-center mb-9 sticky top-0 bg-white border-b-2">
           <a
             href="/home"
