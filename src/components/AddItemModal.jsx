@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import Supabase from "./Supabase";
+import Supabase from "./extras/Supabase";
+import CircularProgress from "@mui/material/CircularProgress";
+import theme from "./extras/theme";
+import { ThemeProvider } from "@mui/material/styles";
 
 export default function AddItemModal({
   user,
@@ -9,12 +12,13 @@ export default function AddItemModal({
   setShow,
 }) {
   const [data, setData] = useState([]);
+  const [loading, isLoading] = useState(false);
   const hideModal = () => {
     onClose();
   };
   const addItemToDB = async (e) => {
-    setLoading(true);
     e.preventDefault();
+    isLoading(true);
     const inputDate = document.getElementById("todoDate").value;
     const currentDate = new Date();
     const reminderTimeInput = document.getElementById("todoTime").value;
@@ -28,12 +32,12 @@ export default function AddItemModal({
     let notificationBoolean = true;
     const notificationInput =
       document.getElementById("notificationSelect").selectedIndex;
-    setShow(false);
     if (notificationInput === 1) {
       notificationBoolean = false;
     }
     if (inputTime < currentTime || isDayAfter2100) {
       alert("Choose a valid date and time. Between now and year 2100");
+      isLoading(false);
     } else {
       try {
         const { data: todoList } = await Supabase.database
@@ -61,6 +65,9 @@ export default function AddItemModal({
       }
       fetch();
       alert("Added!");
+      isLoading(false);
+      setShow(false);
+      setLoading(true);
     }
   };
   const getCurrentDate = () => {
@@ -93,7 +100,6 @@ export default function AddItemModal({
         <h1 className="text-2xl text-center font-semibold mb-2">
           Add New Thing to do
         </h1>
-
         <form className="space-y-4" onSubmit={addItemToDB}>
           <div>
             <label htmlFor="name">Description</label>
@@ -140,13 +146,16 @@ export default function AddItemModal({
               <option value="Off">Off</option>
             </select>
           </div>
-          <div className="pt-4">
-            <input
-              type="submit"
-              value="Add"
-              role="button"
-              className="bg-green-800 text-white rounded-lg p-2 px-4 w-full"
-            />
+          <div className="mt-4 p-2 bg-green-800 text-center text-white rounded-lg">
+            {loading ? (
+              <ThemeProvider theme={theme.theme}>
+                <CircularProgress color="secondary" size={20} />
+              </ThemeProvider>
+            ) : (
+              <button type="submit" className="w-full">
+                Add
+              </button>
+            )}
           </div>
         </form>
       </div>

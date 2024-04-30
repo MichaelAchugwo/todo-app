@@ -1,4 +1,4 @@
-import Supabase from "./Supabase";
+import Supabase from "./extras/Supabase";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { useNavigate } from "react-router-dom";

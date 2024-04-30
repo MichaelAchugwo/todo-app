@@ -1,8 +1,9 @@
-import Supabase from "./Supabase";
+import Supabase from "./extras/Supabase";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
 
-const database = Supabase.database;
+const database = Supabase.database
 
 export default function LogoutPage() {
   useEffect(() => {
@@ -25,8 +26,9 @@ export default function LogoutPage() {
 
   return (
     <>
-      <div className="min-h-screen flex place-items-center justify-center">
-        <h1 className="text-3xl text-center">Logging Out...</h1>
+      <div className="min-h-screen flex flex-col place-items-center justify-center">
+        <h1 className="text-3xl text-center mb-3">Logging Out...</h1>
+        <CircularProgress color="inherit" />
       </div>
     </>
   );

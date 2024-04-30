@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import EditItemModal from "./EditItemModal";
 import DeleteItemModal from "./DeleteItemModal";
-import Supabase from "./Supabase";
+import Supabase from "./extras/Supabase";
 
 export default function Todo({
   id,
@@ -29,6 +29,8 @@ export default function Todo({
   const [editItemTime, setEditItemTime] = useState("");
   const [editItemNotification, setEditItemNotification] = useState("");
   const [daysLeft, setDaysLeft] = useState("");
+  const [loading, isLoading] = useState(false);
+
   let notificationIcon = <i className="fa-regular fa-bell"></i>;
 
   if (notifications === true) {
@@ -48,7 +50,7 @@ export default function Todo({
   };
 
   const updateTodoItem = async () => {
-    setLoading(true);
+    isLoading(true);
     let todoDescription = document.getElementById("todo-name").value;
     let todoDate = document.getElementById("todo-date").value;
     let todoTime = document.getElementById("todo-time").value;
@@ -67,37 +69,45 @@ export default function Todo({
         })
         .eq("id", `${id}`);
       if (error) {
+        isLoading(false)
         throw error;
       }
-      alert("Updated!");
     } catch (error) {
       alert("ERROR! Check your internet connection");
+      isLoading(false)
       console.error("Error updating todo item:", error.message);
     }
-    setShowComponent2(false);
     fetchData();
+    alert("Updated!");
+    isLoading(false);
+    setShowComponent2(false);
+    setLoading(true);
   };
 
   const showDeleteItemModal = () => {
     setShowComponent3(true);
   };
   const deleteTodoItem = async () => {
-    setLoading(true);
+    isLoading(true);
     try {
       const { error } = await Supabase.database
         .from("todo_table")
         .delete()
         .eq("id", `${id}`);
       if (error) {
+        isLoading(false);
         throw error;
       }
-      alert("Deleted!");
     } catch (error) {
       alert("ERROR! Check your internet connection");
+      isLoading(false);
       console.error("Error updating todo item:", error.message);
     }
-    setShowComponent3(false);
     fetchData();
+    alert("Deleted!");
+    isLoading(false);
+    setShowComponent3(false);
+    setLoading(true);
   };
 
   const changeNotification = async () => {
@@ -183,6 +193,7 @@ export default function Todo({
             time={editItemTime}
             notifications={editItemNotification}
             fetch={fetchNewData}
+            loading={loading}
           />
         )}
         {showDeleteModal && (
@@ -190,6 +201,7 @@ export default function Todo({
             onClose={hideModal}
             onDelete={deleteTodoItem}
             fetch={fetchNewData}
+            loading={loading}
           />
         )}
         <div className="border-x-2 border-y-2 border-b-8 border-gray-300 inline-block p-4 pb-6 rounded-xl shadow-sm">

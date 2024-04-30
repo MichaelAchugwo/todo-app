@@ -3,10 +3,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AddItemModal from "./components/AddItemModal";
 import TodoList from "./components/TodoList";
-import getUserData from "./components/GetUserData";
-import fetchData from "./components/FetchData";
-import Supabase from "./components/Supabase";
-import Loader from "./components/Loader";
+import getUserData from "./components/extras/GetUserData";
+import fetchData from "./components/extras/FetchData";
+import Supabase from "./components/extras/Supabase";
+import Loader from "./components/extras/Loader";
 
 function App() {
   useEffect(() => {
@@ -32,7 +32,6 @@ function App() {
   };
 
   const reloadComponents = async () => {
-    hideModal();
     const data = await fetchData(user);
     setData(data);
     setLoading(false);

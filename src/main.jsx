@@ -4,7 +4,7 @@ import App from './App.jsx'
 import LoginPage from "./components/LoginPage";
 import LogoutPage from "./components/LogoutPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import TestEvent from './components/TestEvent.jsx';
+import TestEvent from './components/extras/TestEvent.jsx';
 
 import './index.css'
 

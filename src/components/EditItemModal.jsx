@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./extras/theme";
 
 export default function EditItemModal({
   description,
@@ -6,19 +9,21 @@ export default function EditItemModal({
   time,
   notifications,
   onSave,
-  onClose
+  onClose,
+  loading
 }) {
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedDate, setEditedDate] = useState(date);
   const [editedTime, setEditedTime] = useState(time);
   const [editedNotification, setEditedNotification] = useState(notifications);
+
   const handleSave = (e) => {
     e.preventDefault();
     onSave();
   };
   let selectedOption = "On";
   if (editedNotification == false) {
-    selectedOption = "Off" 
+    selectedOption = "Off";
   }
 
   return (
@@ -85,13 +90,16 @@ export default function EditItemModal({
               <option value="Off">Off</option>
             </select>
           </div>
-          <div className="pt-4">
-            <input
-              type="submit"
-              value="Edit"
-              role="button"
-              className="bg-green-800 text-white rounded-lg p-2 px-4 w-full"
-            />
+          <div className="mt-4 p-2 bg-green-800 text-center text-white rounded-lg">
+            {loading ? (
+              <ThemeProvider theme={theme.theme}>
+                <CircularProgress color="secondary" size={20} />
+              </ThemeProvider>
+            ) : (
+              <button type="submit" className="w-full">
+                Edit
+              </button>
+            )}
           </div>
         </form>
       </div>
