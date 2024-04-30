@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import EditItemModal from "./EditItemModal";
 import DeleteItemModal from "./DeleteItemModal";
 import Supabase from "./extras/Supabase";
+import Toastify from "toastify-js";
 
 export default function Todo({
   id,
@@ -69,16 +70,27 @@ export default function Todo({
         })
         .eq("id", `${id}`);
       if (error) {
-        isLoading(false)
+        isLoading(false);
         throw error;
       }
     } catch (error) {
       alert("ERROR! Check your internet connection");
-      isLoading(false)
+      isLoading(false);
       console.error("Error updating todo item:", error.message);
     }
     fetchData();
-    alert("Updated!");
+    Toastify({
+      text: `${todoDescription.toUpperCase()} updated!`,
+      className: "info",
+      duration: 2000,
+      gravity: "top",
+      position: "center",
+      stopOnFocus: true,
+      style: {
+        background: "rgb(37 99 235)",
+        color: "white",
+      },
+    }).showToast();
     isLoading(false);
     setShowComponent2(false);
     setLoading(true);
@@ -104,7 +116,18 @@ export default function Todo({
       console.error("Error updating todo item:", error.message);
     }
     fetchData();
-    alert("Deleted!");
+    Toastify({
+      text: `${description.toUpperCase()} deleted!`,
+      className: "info",
+      duration: 2000,
+      gravity: "top",
+      position: "center",
+      stopOnFocus: true,
+      style: {
+        background: "rgb(185 28 28)",
+        color: "white",
+      },
+    }).showToast();
     isLoading(false);
     setShowComponent3(false);
     setLoading(true);

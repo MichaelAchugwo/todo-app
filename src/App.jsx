@@ -1,4 +1,5 @@
 import "./App.css";
+import "toastify-js/src/toastify.css";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AddItemModal from "./components/AddItemModal";
@@ -96,7 +97,7 @@ function App() {
           setShow={setShowComponent1}
         />
       )}
-      <div className="min-h-screen p-9 pt-4">
+      <div className="min-h-screen p-9 pt-2">
         <div className="flex justify-between place-items-center mb-9 sticky top-0 bg-white border-b-2">
           <a
             href="/home"

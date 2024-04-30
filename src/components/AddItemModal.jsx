@@ -3,6 +3,7 @@ import Supabase from "./extras/Supabase";
 import CircularProgress from "@mui/material/CircularProgress";
 import theme from "./extras/theme";
 import { ThemeProvider } from "@mui/material/styles";
+import Toastify from "toastify-js";
 
 export default function AddItemModal({
   user,
@@ -64,7 +65,20 @@ export default function AddItemModal({
         console.error("Error:", error);
       }
       fetch();
-      alert("Added!");
+      Toastify({
+        text: `${document
+          .getElementById("todoDescription")
+          .value.toUpperCase()} added!`,
+        className: "info",
+        duration: 2000,
+        gravity: "top",
+        position: "center",
+        stopOnFocus: true,
+        style: {
+          background: "rgb(22 101 52)",
+          color: "white",
+        },
+      }).showToast();
       isLoading(false);
       setShow(false);
       setLoading(true);
