@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const database = Supabase.database
+const database = Supabase.database;
 
 export default function LogoutPage() {
   useEffect(() => {
@@ -19,7 +19,18 @@ export default function LogoutPage() {
       navigate("/");
     } catch (error) {
       console.error(error.message);
-      alert("Check your internet connection");
+      Toastify({
+        text: "Check your internet connection",
+        className: "info",
+        duration: 2000,
+        gravity: "top",
+        position: "center",
+        stopOnFocus: true,
+        style: {
+          background: "rgb(185 28 28)",
+          color: "white",
+        },
+      }).showToast();
       navigate("/home");
     }
   };

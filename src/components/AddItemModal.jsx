@@ -37,7 +37,18 @@ export default function AddItemModal({
       notificationBoolean = false;
     }
     if (inputTime < currentTime || isDayAfter2100) {
-      alert("Choose a valid date and time. Between now and year 2100");
+      Toastify({
+        text: "Choose a valid date and time. Between now and year 2100",
+        className: "info",
+        duration: 2000,
+        gravity: "top",
+        position: "center",
+        stopOnFocus: true,
+        style: {
+          background: "rgb(185 28 28)",
+          color: "white",
+        },
+      }).showToast();
       isLoading(false);
     } else {
       try {
@@ -61,7 +72,18 @@ export default function AddItemModal({
         if (notificationBoolean === true) {
         }
       } catch (error) {
-        alert("ERROR! Check your internet connection");
+        Toastify({
+          text: "ERROR! Check your internet connection",
+          className: "info",
+          duration: 2000,
+          gravity: "top",
+          position: "center",
+          stopOnFocus: true,
+          style: {
+            background: "rgb(185 28 28)",
+            color: "white",
+          },
+        }).showToast();
         console.error("Error:", error);
       }
       fetch();

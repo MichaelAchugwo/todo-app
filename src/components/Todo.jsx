@@ -74,7 +74,18 @@ export default function Todo({
         throw error;
       }
     } catch (error) {
-      alert("ERROR! Check your internet connection");
+      Toastify({
+        text: "ERROR! Check your internet connection",
+        className: "info",
+        duration: 2000,
+        gravity: "top",
+        position: "center",
+        stopOnFocus: true,
+        style: {
+          background: "rgb(185 28 28)",
+          color: "white",
+        },
+      }).showToast();
       isLoading(false);
       console.error("Error updating todo item:", error.message);
     }
@@ -111,7 +122,18 @@ export default function Todo({
         throw error;
       }
     } catch (error) {
-      alert("ERROR! Check your internet connection");
+      Toastify({
+        text: "ERROR! Check your internet connection",
+        className: "info",
+        duration: 2000,
+        gravity: "top",
+        position: "center",
+        stopOnFocus: true,
+        style: {
+          background: "rgb(185 28 28)",
+          color: "white",
+        },
+      }).showToast();
       isLoading(false);
       console.error("Error updating todo item:", error.message);
     }
@@ -145,12 +167,45 @@ export default function Todo({
         throw error;
       }
       if (!notifications === false) {
-        alert("Notifications are now turned off for " + description);
+        Toastify({
+          text: `Notifications are now turned off for ${description}`,
+          className: "info",
+          duration: 2000,
+          gravity: "top",
+          position: "center",
+          stopOnFocus: true,
+          style: {
+            background: "rgb(185 28 28)",
+            color: "white",
+          },
+        }).showToast();
       } else if (!notifications === true) {
-        alert("Notifications are now turned on for " + description);
+        Toastify({
+          text: `Notifications are now turned on for ${description}`,
+          className: "info",
+          duration: 2000,
+          gravity: "top",
+          position: "center",
+          stopOnFocus: true,
+          style: {
+            background: "rgb(37 99 235)",
+            color: "white",
+          },
+        }).showToast();
       }
     } catch (error) {
-      alert("ERROR! Check your internet connection");
+      Toastify({
+        text: "ERROR! Check your internet connection",
+        className: "info",
+        duration: 2000,
+        gravity: "top",
+        position: "center",
+        stopOnFocus: true,
+        style: {
+          background: "rgb(185 28 28)",
+          color: "white",
+        },
+      }).showToast();
       console.error("Error changing notification settings:", error.message);
     }
     fetchData();
